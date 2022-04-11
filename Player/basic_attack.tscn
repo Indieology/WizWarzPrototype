@@ -64,7 +64,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7s7kp"]
-radius = 7.0
+radius = 4.0
 
 [node name="Basic Attack" type="RigidDynamicBody2D"]
 texture_filter = 1
@@ -73,10 +73,12 @@ collision_mask = 2
 script = ExtResource( "1_g6q6o" )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -1)
 shape = SubResource( "CircleShape2D_ad3ri" )
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-8, 1)
+position = Vector2(-4, 0)
 scale = Vector2(0.6, 0.6)
 frames = SubResource( "SpriteFrames_bphps" )
 playing = true
@@ -92,7 +94,10 @@ one_shot = true
 autostart = true
 
 [node name="PlayerDetector" type="Area2D" parent="."]
+position = Vector2(1, -1)
+scale = Vector2(-1, 1)
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
-position = Vector2(-1, 0)
 shape = SubResource( "CircleShape2D_7s7kp" )

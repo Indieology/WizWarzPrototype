@@ -5,6 +5,7 @@ const SPEED = 100.0
 
 var basic_attack : PackedScene = preload("res://Player/basic_attack.tscn")
 
+signal hurt_player
 
 func _ready():
 	$Networking/MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
@@ -15,6 +16,7 @@ func _physics_process(delta):
 			position = $Networking.sync_position
 			$AnimatedSprite2D.flip_h = $Networking.sync_character_h_flip
 			$AnimationPlayer.play($Networking.sync_character_animation)
+			$ProjectileDetector.position = $Networking.sync_character_projectile_detector
 			$Networking.processed_position = true
 		velocity = $Networking.sync_velocity
 		
@@ -56,11 +58,11 @@ func spawn_projectile_server():
 	# That way different attacks could be triggered by just changing one argument :)
 	
 	if not multiplayer.is_server():
-		print('Client ' + multiplayer.get_remote_sender_id() + ' told me to shoot. I should report them for cheating!')
+		print('Client ' + str(multiplayer.get_remote_sender_id()) + ' told me to shoot. I should report them for cheating!')
 		return
 	# Validate the correct person has triggered this RPC
 	if str(name).to_int() != multiplayer.get_remote_sender_id():
-		print('Client ' + multiplayer.get_remote_sender_id() + ' is trying to have player ' + str(name) + ' shoot. They are cheating!')
+		print('Client ' + str(multiplayer.get_remote_sender_id()) + ' is trying to have player ' + str(name) + ' shoot. They are cheating!')
 		return
 	
 	# Validate that the player is allowed to attack
@@ -72,11 +74,11 @@ func spawn_projectile_server():
 	var pos : Vector2
 	var impulse : Vector2
 	if $AnimatedSprite2D.flip_h:
-		pos = position + Vector2(-5,0)
-		impulse = Vector2(-200,0)
+		pos = position + Vector2(-7,0)
+		impulse = Vector2(-225,0)
 	else:
 		pos = position + Vector2(20,0)
-		impulse = Vector2(200,0)
+		impulse = Vector2(225,0)
 	
 	# Call all clients to make them spawn the projectile. This also runs for us (the server)
 	rpc('spawn_projectile_clients', pos, impulse, $AnimatedSprite2D.flip_h)
@@ -93,10 +95,11 @@ func spawn_projectile_clients(position : Vector2, impulse : Vector2, sprite_flip
 	var attack_scene = basic_attack.instantiate()
 	var attack_sprite = attack_scene.get_node("AnimatedSprite2D")
 	get_tree().root.get_node("TestLevel/Projectiles").add_child(attack_scene)
-	#get_parent().get_parent().get_node("Projectiles").add_child(attack_scene)
 	attack_scene.position = position
 	attack_scene.apply_impulse(impulse)
 	attack_sprite.flip_h = sprite_flipped
+	if sprite_flipped:
+		attack_sprite.get_parent().get_node("PlayerDetector").position = Vector2(-9,-1)
 
 func animate_player():
 	if velocity == Vector2.ZERO and $AnimationPlayer.get_current_animation() != "Attack":
@@ -108,11 +111,19 @@ func animate_player():
 	if velocity.x < 0:
 		$AnimatedSprite2D.flip_h = true
 		$Networking.sync_character_h_flip = $AnimatedSprite2D.flip_h
-		
+		$ProjectileDetector.position = Vector2(6,0)
+		$Networking.sync_character_projectile_detector = $ProjectileDetector.position
 	elif velocity.x > 0:
 		$AnimatedSprite2D.flip_h = false
 		$Networking.sync_character_h_flip = $AnimatedSprite2D.flip_h 
-		
+		$ProjectileDetector.position = Vector2(-2,0)
+		$Networking.sync_character_projectile_detector = $ProjectileDetector.position
 
 func is_local_authority():
 	return $Networking/MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id()
+
+
+
+
+func _on_projectile_detector_area_entered(area):
+	emit_signal("hurt_player")

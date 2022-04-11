@@ -20,7 +20,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Wizard Wars Prototype"
+config/name="Wizard Wars Prototype Mitch"
 run/main_scene="res://Levels/test_level.tscn"
 config/icon="res://icon.png"
 config/features=PackedStringArray("4.0", "Vulkan Clustered")

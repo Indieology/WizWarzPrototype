@@ -34,9 +34,14 @@ func create_player(id : int) -> void:
 	p.name = str(id)
 	
 	$Players.add_child(p)
+	p.connect("hurt_player", hurt_player, [id])
 
 func destroy_player(id : int) -> void:
 	$Players.get_node(str(id)).queue_free()
+
+func hurt_player(id):
+	print("player " + str(id) + " has been hurt")
+	
 
 @rpc(any_peer)
 func player_projectile():
