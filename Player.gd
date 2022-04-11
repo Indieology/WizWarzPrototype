@@ -48,21 +48,55 @@ func get_player_input():
 			$AnimationPlayer.play("Attack")
 			$Networking.sync_character_animation = "Attack"
 			
-			rpc_id(1, "spawn_projectile")
+			rpc_id(1, "spawn_projectile_server")
+
 @rpc(any_peer)
-func spawn_projectile():
+func spawn_projectile_server():
+	# TODO consider adding the path to the attack you want.
+	# That way different attacks could be triggered by just changing one argument :)
+	
+	if not multiplayer.is_server():
+		print('Client ' + multiplayer.get_remote_sender_id() + ' told me to shoot. I should report them for cheating!')
+		return
+	# Validate the correct person has triggered this RPC
+	if str(name).to_int() != multiplayer.get_remote_sender_id():
+		print('Client ' + multiplayer.get_remote_sender_id() + ' is trying to have player ' + str(name) + ' shoot. They are cheating!')
+		return
+	
+	# Validate that the player is allowed to attack
+	# This should be done here on the server to prevent cheating.
+	# It should also be done client-side, to save us an RPC call for good clients :)
+	if not $AttackDelay.is_stopped():
+		return
+
+	var pos : Vector2
+	var impulse : Vector2
+	if $AnimatedSprite2D.flip_h:
+		pos = position + Vector2(-5,0)
+		impulse = Vector2(-200,0)
+	else:
+		pos = position + Vector2(20,0)
+		impulse = Vector2(200,0)
+	
+	# Call all clients to make them spawn the projectile. This also runs for us (the server)
+	rpc('spawn_projectile_clients', pos, impulse, $AnimatedSprite2D.flip_h)
+
+@rpc(call_local)
+func spawn_projectile_clients(position : Vector2, impulse : Vector2, sprite_flipped : bool):
+	# TODO consider passing a String in here with the res:// path to the attack. See TODO on _server method
+	
+	# Validation
+	if 1 != multiplayer.get_remote_sender_id(): # This shouldn't be possible, @rpc should block it
+		print(multiplayer.get_remote_sender_id() + ' is trying to cheat!')
+		return
+
 	var attack_scene = basic_attack.instantiate()
 	var attack_sprite = attack_scene.get_node("AnimatedSprite2D")
 	get_tree().root.get_node("TestLevel/Projectiles").add_child(attack_scene)
 	#get_parent().get_parent().get_node("Projectiles").add_child(attack_scene)
-	if $AnimatedSprite2D.flip_h:
-		attack_scene.position = position + Vector2(-5,0)
-		attack_scene.apply_impulse(Vector2(-200,0))
-		attack_sprite.flip_h = true
-	else:
-		attack_scene.position = position + Vector2(20,0)
-		attack_scene.apply_impulse(Vector2(200,0))
-		attack_sprite.flip_h = false
+	attack_scene.position = position
+	attack_scene.apply_impulse(impulse)
+	attack_sprite.flip_h = sprite_flipped
 
 func animate_player():
 	if velocity == Vector2.ZERO and $AnimationPlayer.get_current_animation() != "Attack":
