@@ -4,6 +4,8 @@ extends Node2D
 var PlayerScene = preload("res://Player/player.tscn")
 var Fireball = preload("res://Player/basic_attack.tscn")
 
+var random = RandomNumberGenerator.new()
+
 func _enter_tree():
 	#Start the server if Godot is passed the --server argument
 	#Create client otherwise
@@ -34,6 +36,9 @@ func create_player(id : int) -> void:
 	p.name = str(id)
 	
 	$Players.add_child(p)
+	random.randomize()
+	var random_number = random.randi_range(-100, 100)
+	p.position = Vector2(random_number, random_number)
 	p.connect("hurt_player", hurt_player, [id])
 
 func destroy_player(id : int) -> void:
