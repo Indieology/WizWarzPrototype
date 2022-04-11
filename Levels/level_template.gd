@@ -41,6 +41,10 @@ func destroy_player(id : int) -> void:
 
 func hurt_player(id):
 	print("player " + str(id) + " has been hurt")
+	var this_player = $Players.get_node(str(id))
+	this_player.health -= 1
+	if this_player.health <= 0:
+		destroy_player(id)
 	
 
 @rpc(any_peer)

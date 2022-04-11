@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name Player
 
+var health = 3
+
 const SPEED = 100.0
 
 var basic_attack : PackedScene = preload("res://Player/basic_attack.tscn")
