@@ -39,6 +39,8 @@ func create_player(id : int) -> void:
 	random.randomize()
 	var random_number = random.randi_range(-100, 100)
 	p.position = Vector2(random_number, random_number)
+	p.get_node("Networking").sync_position = Vector2(random_number, random_number)
+	print(p.get_node("Networking").sync_position)
 	p.connect("hurt_player", hurt_player, [id])
 
 func destroy_player(id : int) -> void:
