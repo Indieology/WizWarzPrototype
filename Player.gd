@@ -11,6 +11,10 @@ signal hurt_player
 
 func _ready():
 	$Networking/MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
+	
+	position = $Networking.sync_position
+	print("position: " + str(position))
+	print("Sync_Position: " + str($Networking.sync_position) )
 
 func _physics_process(delta):
 	if not is_local_authority():

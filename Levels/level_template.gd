@@ -35,13 +35,14 @@ func create_player(id : int) -> void:
 	#Set the unique name for player, so we can calculate local authority
 	p.name = str(id)
 	
-	$Players.add_child(p)
 	random.randomize()
-	var random_number = random.randi_range(-100, 100)
-	p.position = Vector2(random_number, random_number)
+	var random_number = random.randi_range(-12, 12)
 	p.get_node("Networking").sync_position = Vector2(random_number, random_number)
-	print(p.get_node("Networking").sync_position)
+	print("position printing from level script: " + str(p.get_node("Networking").sync_position))
+	
 	p.connect("hurt_player", hurt_player, [id])
+	
+	$Players.add_child(p)
 
 func destroy_player(id : int) -> void:
 	$Players.get_node(str(id)).queue_free()
@@ -49,11 +50,16 @@ func destroy_player(id : int) -> void:
 func hurt_player(id):
 	print("player " + str(id) + " has been hurt")
 	var this_player = $Players.get_node(str(id))
+	
 	this_player.health -= 1
 	if this_player.health <= 0:
+		this_player.get_node("Networking").sync_character_animation = "Death"
+		print("Health: " + str(this_player.health))
 		destroy_player(id)
 	
 
 @rpc(any_peer)
 func player_projectile():
 	rpc("spawn_projectile")
+
+
