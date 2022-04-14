@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djbyxffhfklst"
-path="res://.godot/imported/Mage_Walk11.png-a689e6aea95f1fb3df53e4bfbadcbab1.ctex"
+uid="uid://dyhublvckw0xj"
+path="res://.godot/imported/RedMage_Sprites_Idle.png-b49306d2fbba241e2f3757cbeb4e4b01.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Player/Player Sprites/Walk/Mage_Walk11.png"
-dest_files=["res://.godot/imported/Mage_Walk11.png-a689e6aea95f1fb3df53e4bfbadcbab1.ctex"]
+source_file="res://Player/Red Mage Sprites/Idle/RedMage_Sprites_Idle.png"
+dest_files=["res://.godot/imported/RedMage_Sprites_Idle.png-b49306d2fbba241e2f3757cbeb4e4b01.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
