@@ -118,15 +118,15 @@ animations = [{
 "name": &"Attack",
 "speed": 7.0
 }, {
-"frames": [SubResource( "AtlasTexture_yepas" ), SubResource( "AtlasTexture_sraad" ), SubResource( "AtlasTexture_c74mj" ), SubResource( "AtlasTexture_hlu6w" ), SubResource( "AtlasTexture_s8udk" ), SubResource( "AtlasTexture_qc78o" ), SubResource( "AtlasTexture_tfo0i" ), SubResource( "AtlasTexture_d7kg5" )],
-"loop": true,
-"name": &"Idle",
-"speed": 4.0
-}, {
 "frames": [ExtResource( "5_p6on4" ), ExtResource( "6_3qd6v" ), ExtResource( "7_xrpbk" ), ExtResource( "8_da73f" ), ExtResource( "9_ykkfm" ), ExtResource( "10_y0r53" ), ExtResource( "11_7gbg7" ), ExtResource( "12_yabnj" ), ExtResource( "13_ud37t" )],
 "loop": true,
 "name": &"Death",
 "speed": 5.0
+}, {
+"frames": [SubResource( "AtlasTexture_yepas" ), SubResource( "AtlasTexture_sraad" ), SubResource( "AtlasTexture_c74mj" ), SubResource( "AtlasTexture_hlu6w" ), SubResource( "AtlasTexture_s8udk" ), SubResource( "AtlasTexture_qc78o" ), SubResource( "AtlasTexture_tfo0i" ), SubResource( "AtlasTexture_d7kg5" )],
+"loop": true,
+"name": &"Idle",
+"speed": 4.0
 }, {
 "frames": [SubResource( "AtlasTexture_7vn3r" ), SubResource( "AtlasTexture_rpibw" ), SubResource( "AtlasTexture_jb3k5" ), SubResource( "AtlasTexture_80ot1" ), SubResource( "AtlasTexture_ebgr5" ), SubResource( "AtlasTexture_arwaw" ), SubResource( "AtlasTexture_svued" ), SubResource( "AtlasTexture_12sdq" ), SubResource( "AtlasTexture_qbavd" ), SubResource( "AtlasTexture_663bl" ), SubResource( "AtlasTexture_yjy7v" )],
 "loop": true,

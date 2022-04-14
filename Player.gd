@@ -49,14 +49,14 @@ func get_player_input():
 		move_direction += Vector2.UP
 	velocity = move_direction.normalized() * SPEED
 
-	
-	if Input.is_action_just_pressed("attack"):
-		if $AttackDelay.is_stopped():
-			$AttackDelay.start()
-			$AnimationPlayer.play("Attack")
-			$Networking.sync_character_animation = "Attack"
-			
-			rpc_id(1, "spawn_projectile_server")
+	if not $AnimationPlayer.current_animation == "Death":
+		if Input.is_action_just_pressed("attack"):
+			if $AttackDelay.is_stopped():
+				$AttackDelay.start()
+				$AnimationPlayer.play("Attack")
+				$Networking.sync_character_animation = "Attack"
+				
+				rpc_id(1, "spawn_projectile_server")
 
 @rpc(any_peer)
 func spawn_projectile_server():
@@ -108,22 +108,26 @@ func spawn_projectile_clients(position : Vector2, impulse : Vector2, sprite_flip
 		attack_sprite.get_parent().get_node("PlayerDetector").position = Vector2(-9,-1)
 
 func animate_player():
-	if velocity == Vector2.ZERO and $AnimationPlayer.get_current_animation() != "Attack":
-		$AnimationPlayer.play("Idle")
-		$Networking.sync_character_animation = "Idle"
-	elif $AnimationPlayer.get_current_animation() != "Attack":
-		$AnimationPlayer.play("Walk")
-		$Networking.sync_character_animation = "Walk"
-	if velocity.x < 0:
-		$AnimatedSprite2D.flip_h = true
-		$Networking.sync_character_h_flip = $AnimatedSprite2D.flip_h
-		$ProjectileDetector.position = Vector2(6,0)
-		$Networking.sync_character_projectile_detector = $ProjectileDetector.position
-	elif velocity.x > 0:
-		$AnimatedSprite2D.flip_h = false
-		$Networking.sync_character_h_flip = $AnimatedSprite2D.flip_h 
-		$ProjectileDetector.position = Vector2(-2,0)
-		$Networking.sync_character_projectile_detector = $ProjectileDetector.position
+	if health <= 0:
+		$AnimationPlayer.play("Death")
+		$Networking.sync_character_animation = "Death"
+	else:
+		if velocity == Vector2.ZERO and $AnimationPlayer.get_current_animation() != "Attack":
+			$AnimationPlayer.play("Idle")
+			$Networking.sync_character_animation = "Idle"
+		elif $AnimationPlayer.get_current_animation() != "Attack":
+			$AnimationPlayer.play("Walk")
+			$Networking.sync_character_animation = "Walk"
+		if velocity.x < 0:
+			$AnimatedSprite2D.flip_h = true
+			$Networking.sync_character_h_flip = $AnimatedSprite2D.flip_h
+			$ProjectileDetector.position = Vector2(6,0)
+			$Networking.sync_character_projectile_detector = $ProjectileDetector.position
+		elif velocity.x > 0:
+			$AnimatedSprite2D.flip_h = false
+			$Networking.sync_character_h_flip = $AnimatedSprite2D.flip_h 
+			$ProjectileDetector.position = Vector2(-2,0)
+			$Networking.sync_character_projectile_detector = $ProjectileDetector.position
 
 func is_local_authority():
 	return $Networking/MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id()
