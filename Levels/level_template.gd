@@ -53,6 +53,7 @@ func hurt_player(id):
 	
 	#Not sure if this is the best way to be doing this? tried doing this in the player script as well
 	this_player.health -= 1
+	this_player.get_node("Networking").sync_character_health = this_player.health
 	if this_player.health <= 0:
 		this_player.get_node("Networking").sync_character_animation = "Death"
 		print("Health: " + str(this_player.health))

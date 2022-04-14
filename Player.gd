@@ -1,27 +1,32 @@
 extends CharacterBody2D
 class_name Player
 
-var health = 3
-
 const SPEED = 100.0
 
+@onready var states = $state_manager
+@onready var animation_player = $AnimationPlayer
+
 var basic_attack : PackedScene = preload("res://Player/basic_attack.tscn")
+var health = 3
 
 signal hurt_player
 
 func _ready():
 	$Networking/MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
+	$Networking.sync_character_health = health
 	
 	position = $Networking.sync_position
 	print("position: " + str(position))
 	print("Sync_Position: " + str($Networking.sync_position) )
+	
+	states.init(self)
 
 func _physics_process(delta):
 	if not is_local_authority():
 		if not $Networking.processed_position:
 			position = $Networking.sync_position
 			$AnimatedSprite2D.flip_h = $Networking.sync_character_h_flip
-			$AnimationPlayer.play($Networking.sync_character_animation)
+			animation_player.play($Networking.sync_character_animation)
 			$ProjectileDetector.position = $Networking.sync_character_projectile_detector
 			$Networking.processed_position = true
 		velocity = $Networking.sync_velocity
@@ -29,34 +34,15 @@ func _physics_process(delta):
 		move_and_slide()
 		return
 	
-	get_player_input()
-	animate_player()
-	move_and_slide()
-	
-	$Networking.sync_position = position
-	$Networking.sync_velocity = velocity
-	
-func get_player_input():
-	var move_direction = Vector2()
-	
-	if Input.is_action_pressed("move_down"):
-		move_direction += Vector2.DOWN
-	if Input.is_action_pressed("move_left"):
-		move_direction += Vector2.LEFT
-	if Input.is_action_pressed("move_right"):
-		move_direction += Vector2.RIGHT
-	if Input.is_action_pressed("move_up"):
-		move_direction += Vector2.UP
-	velocity = move_direction.normalized() * SPEED
+	states.physics_process(delta)
 
-	if not $AnimationPlayer.current_animation == "Death":
-		if Input.is_action_just_pressed("attack"):
-			if $AttackDelay.is_stopped():
-				$AttackDelay.start()
-				$AnimationPlayer.play("Attack")
-				$Networking.sync_character_animation = "Attack"
-				
-				rpc_id(1, "spawn_projectile_server")
+func _unhandled_input(event: InputEvent) -> void:
+	states.input(event)
+
+func get_player_input():
+	#This is where we used to call the attack if player pressed "attack" 
+	#Wondering how to call this RPC from attack_state script
+	rpc_id(1, "spawn_projectile_server")
 
 @rpc(any_peer)
 func spawn_projectile_server():
@@ -107,33 +93,8 @@ func spawn_projectile_clients(position : Vector2, impulse : Vector2, sprite_flip
 	if sprite_flipped:
 		attack_sprite.get_parent().get_node("PlayerDetector").position = Vector2(-9,-1)
 
-func animate_player():
-	if health <= 0:
-		$AnimationPlayer.play("Death")
-		$Networking.sync_character_animation = "Death"
-	else:
-		if velocity == Vector2.ZERO and $AnimationPlayer.get_current_animation() != "Attack":
-			$AnimationPlayer.play("Idle")
-			$Networking.sync_character_animation = "Idle"
-		elif $AnimationPlayer.get_current_animation() != "Attack":
-			$AnimationPlayer.play("Walk")
-			$Networking.sync_character_animation = "Walk"
-		if velocity.x < 0:
-			$AnimatedSprite2D.flip_h = true
-			$Networking.sync_character_h_flip = $AnimatedSprite2D.flip_h
-			$ProjectileDetector.position = Vector2(6,0)
-			$Networking.sync_character_projectile_detector = $ProjectileDetector.position
-		elif velocity.x > 0:
-			$AnimatedSprite2D.flip_h = false
-			$Networking.sync_character_h_flip = $AnimatedSprite2D.flip_h 
-			$ProjectileDetector.position = Vector2(-2,0)
-			$Networking.sync_character_projectile_detector = $ProjectileDetector.position
-
 func is_local_authority():
 	return $Networking/MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id()
-
-
-
 
 func _on_projectile_detector_area_entered(area):
 	emit_signal("hurt_player")
