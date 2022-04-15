@@ -20,6 +20,7 @@ func physics_process(delta: float) -> int:
 	
 	player.velocity = move_direction.normalized() * player.SPEED
 	get_parent().get_parent().get_node("Networking").sync_velocity = player.velocity
+	get_parent().get_parent().get_node("Networking").sync_position = player.position
 	player.move_and_slide()
 	
 	if player.velocity.x < 0:
