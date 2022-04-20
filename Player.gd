@@ -39,9 +39,7 @@ func _physics_process(delta):
 func _unhandled_input(event: InputEvent) -> void:
 	states.input(event)
 
-func get_player_input():
-	#This is where we used to call the attack if player pressed "attack" 
-	#Wondering how to call this RPC from attack_state script
+func attack_animation_finished() -> void:
 	rpc_id(1, "spawn_projectile_server")
 
 @rpc(any_peer)
@@ -98,3 +96,4 @@ func is_local_authority():
 
 func _on_projectile_detector_area_entered(area):
 	emit_signal("hurt_player")
+

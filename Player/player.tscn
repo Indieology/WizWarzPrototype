@@ -20,6 +20,26 @@
 [ext_resource type="Script" path="res://Player/State Machine/death_state.gd" id="19_7ivn0"]
 [ext_resource type="Script" path="res://Multiplayer/player_networking.gd" id="21_rgm0t"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmyjm"]
+atlas = ExtResource( "4_50eux" )
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0nk8"]
+atlas = ExtResource( "4_50eux" )
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a01i7"]
+atlas = ExtResource( "4_50eux" )
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_msl0e"]
+atlas = ExtResource( "4_50eux" )
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f481d"]
+atlas = ExtResource( "4_50eux" )
+region = Rect2(256, 0, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_yepas"]
 atlas = ExtResource( "2_1euo6" )
 region = Rect2(0, 0, 32, 32)
@@ -51,26 +71,6 @@ region = Rect2(192, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_d7kg5"]
 atlas = ExtResource( "2_1euo6" )
 region = Rect2(224, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jmyjm"]
-atlas = ExtResource( "4_50eux" )
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_r0nk8"]
-atlas = ExtResource( "4_50eux" )
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_a01i7"]
-atlas = ExtResource( "4_50eux" )
-region = Rect2(128, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_msl0e"]
-atlas = ExtResource( "4_50eux" )
-region = Rect2(192, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_f481d"]
-atlas = ExtResource( "4_50eux" )
-region = Rect2(256, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7vn3r"]
 atlas = ExtResource( "2_5adu3" )
@@ -123,15 +123,15 @@ animations = [{
 "name": &"Death",
 "speed": 5.0
 }, {
-"frames": [SubResource( "AtlasTexture_yepas" ), SubResource( "AtlasTexture_sraad" ), SubResource( "AtlasTexture_c74mj" ), SubResource( "AtlasTexture_hlu6w" ), SubResource( "AtlasTexture_s8udk" ), SubResource( "AtlasTexture_qc78o" ), SubResource( "AtlasTexture_tfo0i" ), SubResource( "AtlasTexture_d7kg5" )],
-"loop": true,
-"name": &"Idle",
-"speed": 4.0
-}, {
 "frames": [SubResource( "AtlasTexture_jmyjm" ), SubResource( "AtlasTexture_r0nk8" ), SubResource( "AtlasTexture_a01i7" ), SubResource( "AtlasTexture_msl0e" ), SubResource( "AtlasTexture_f481d" )],
 "loop": false,
 "name": &"Attack",
 "speed": 7.0
+}, {
+"frames": [SubResource( "AtlasTexture_yepas" ), SubResource( "AtlasTexture_sraad" ), SubResource( "AtlasTexture_c74mj" ), SubResource( "AtlasTexture_hlu6w" ), SubResource( "AtlasTexture_s8udk" ), SubResource( "AtlasTexture_qc78o" ), SubResource( "AtlasTexture_tfo0i" ), SubResource( "AtlasTexture_d7kg5" )],
+"loop": true,
+"name": &"Idle",
+"speed": 4.0
 }, {
 "frames": [SubResource( "AtlasTexture_7vn3r" ), SubResource( "AtlasTexture_rpibw" ), SubResource( "AtlasTexture_jb3k5" ), SubResource( "AtlasTexture_80ot1" ), SubResource( "AtlasTexture_ebgr5" ), SubResource( "AtlasTexture_arwaw" ), SubResource( "AtlasTexture_svued" ), SubResource( "AtlasTexture_12sdq" ), SubResource( "AtlasTexture_qbavd" ), SubResource( "AtlasTexture_663bl" ), SubResource( "AtlasTexture_yjy7v" )],
 "loop": true,
@@ -169,6 +169,20 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.35),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"attack_animation_finished"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_kpnvb"]
