@@ -219,11 +219,11 @@ tracks/2/path = NodePath(".")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(1),
+"times": PackedFloat32Array(1.1),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
-"method": &"queue_free"
+"method": &"kill_player"
 }]
 }
 
@@ -337,7 +337,7 @@ properties/5/path = NodePath(":sync_character_health")
 properties/5/spawn = true
 properties/5/sync = true
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Character" type="CharacterBody2D"]
 position = Vector2(58, 28)
 motion_mode = 1
 script = ExtResource( "1_y7mrf" )

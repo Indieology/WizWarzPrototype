@@ -99,3 +99,6 @@ func is_local_authority():
 func _on_projectile_detector_area_entered(area):
 	emit_signal("hurt_player")
 
+func kill_player() -> void:
+	if is_local_authority():
+		queue_free()
