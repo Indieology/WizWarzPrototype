@@ -118,11 +118,6 @@ region = Rect2(320, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_umfaa"]
 animations = [{
-"frames": [ExtResource( "5_p6on4" ), ExtResource( "6_3qd6v" ), ExtResource( "7_xrpbk" ), ExtResource( "8_da73f" ), ExtResource( "9_ykkfm" ), ExtResource( "10_y0r53" ), ExtResource( "11_7gbg7" ), ExtResource( "12_yabnj" ), ExtResource( "13_ud37t" )],
-"loop": true,
-"name": &"Death",
-"speed": 5.0
-}, {
 "frames": [SubResource( "AtlasTexture_jmyjm" ), SubResource( "AtlasTexture_r0nk8" ), SubResource( "AtlasTexture_a01i7" ), SubResource( "AtlasTexture_msl0e" ), SubResource( "AtlasTexture_f481d" )],
 "loop": false,
 "name": &"Attack",
@@ -132,6 +127,11 @@ animations = [{
 "loop": true,
 "name": &"Idle",
 "speed": 4.0
+}, {
+"frames": [ExtResource( "5_p6on4" ), ExtResource( "6_3qd6v" ), ExtResource( "7_xrpbk" ), ExtResource( "8_da73f" ), ExtResource( "9_ykkfm" ), ExtResource( "10_y0r53" ), ExtResource( "11_7gbg7" ), ExtResource( "12_yabnj" ), ExtResource( "13_ud37t" )],
+"loop": true,
+"name": &"Death",
+"speed": 5.0
 }, {
 "frames": [SubResource( "AtlasTexture_7vn3r" ), SubResource( "AtlasTexture_rpibw" ), SubResource( "AtlasTexture_jb3k5" ), SubResource( "AtlasTexture_80ot1" ), SubResource( "AtlasTexture_ebgr5" ), SubResource( "AtlasTexture_arwaw" ), SubResource( "AtlasTexture_svued" ), SubResource( "AtlasTexture_12sdq" ), SubResource( "AtlasTexture_qbavd" ), SubResource( "AtlasTexture_663bl" ), SubResource( "AtlasTexture_yjy7v" )],
 "loop": true,

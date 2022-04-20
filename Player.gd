@@ -37,10 +37,12 @@ func _physics_process(delta):
 	states.physics_process(delta)
 
 func _unhandled_input(event: InputEvent) -> void:
-	states.input(event)
+	if is_local_authority():
+		states.input(event)
 
 func attack_animation_finished() -> void:
-	rpc_id(1, "spawn_projectile_server")
+	if is_local_authority():
+		rpc_id(1, "spawn_projectile_server")
 
 @rpc(any_peer)
 func spawn_projectile_server():
