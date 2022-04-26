@@ -14,8 +14,7 @@ enum State {
 var player: Player
 
 func enter() -> void:
-	player.animation_player.play(animation_name)
-	get_parent().get_parent().get_node("Networking").sync_character_animation = animation_name
+	pass
 
 func exit() -> void:
 	pass

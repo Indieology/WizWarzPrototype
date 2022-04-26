@@ -55,7 +55,6 @@ func hurt_player(id):
 	this_player.get_node("Networking").sync_character_health = this_player.health
 	if this_player.health <= 0:
 		this_player.get_node("state_manager").change_state(4)
-		this_player.get_node("Networking").sync_character_animation = "Death"
 		print("Health: " + str(this_player.health))
 		print("Health on server: " + str(this_player.get_node("Networking").sync_character_health))
 		print(this_player.get_node("state_manager").current_state)

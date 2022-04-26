@@ -26,8 +26,10 @@ func _physics_process(delta):
 		if not $Networking.processed_position:
 			position = $Networking.sync_position
 			$AnimatedSprite2D.flip_h = $Networking.sync_character_h_flip
-			animation_player.play($Networking.sync_character_animation)
 			$ProjectileDetector.position = $Networking.sync_character_projectile_detector
+			
+			states.change_state($Networking.sync_character_state)
+			
 			$Networking.processed_position = true
 		velocity = $Networking.sync_velocity
 		
