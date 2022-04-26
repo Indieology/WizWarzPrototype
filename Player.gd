@@ -9,6 +9,7 @@ const SPEED = 100.0
 var basic_attack : PackedScene = preload("res://Player/basic_attack.tscn")
 var health = 3 :
 	set(value):
+		health = value
 		$Networking.sync_character_health = value
 
 signal hurt_player

@@ -52,9 +52,6 @@ func hurt_player(id):
 	var this_player = $Players.get_node(str(id))
 	
 	this_player.health -= 1
-	print("Health: " + str(this_player.health))
-	print("Health on server: " + str(this_player.get_node("Networking").sync_character_health))
-	
 	if this_player.health <= 0:
 		this_player.get_node("state_manager").change_state(4)
 		print("Health: " + str(this_player.health))
