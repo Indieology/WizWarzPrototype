@@ -15,6 +15,8 @@ func change_state(new_state: int) -> void:
 	
 	current_state = states[new_state]
 	current_state.enter()
+	
+	get_parent().get_node("Networking").sync_character_state = new_state
 
 #Initialize state machine by giving states access to player
 func init(player: Player) -> void:

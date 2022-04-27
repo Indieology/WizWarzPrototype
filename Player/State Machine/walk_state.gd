@@ -42,6 +42,3 @@ func physics_process(delta: float) -> int:
 	
 	return State.Null
 
-func enter() -> void:
-	player.animation_player.play(animation_name)
-	get_parent().get_parent().get_node("Networking").sync_character_state = State.Walk

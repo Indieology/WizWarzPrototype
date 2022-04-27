@@ -14,7 +14,7 @@ enum State {
 var player: Player
 
 func enter() -> void:
-	pass
+	player.animation_player.play(animation_name)
 
 func exit() -> void:
 	pass
