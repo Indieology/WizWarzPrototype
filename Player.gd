@@ -15,8 +15,6 @@ var health = 3 :
 		else:
 			print("Player being damaged by client and not server!")
 
-signal hurt_player
-
 func _ready():
 	$Networking/MultiplayerSynchronizer.set_multiplayer_authority(str(name).to_int())
 	$Networking.sync_character_health = health
@@ -104,14 +102,3 @@ func spawn_projectile_clients(position : Vector2, impulse : Vector2, sprite_flip
 func is_local_authority():
 	return $Networking/MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id()
 
-func _on_projectile_detector_area_entered(area):
-	emit_signal("hurt_player")
-	if is_local_authority():
-		health -= 1
-		print("Health: " + str(health))
-		print("Health on server: " + str($Networking.sync_character_health))
-		if health <= 0:
-			states.change_state(4)
-			print("Died! Health: " + str(health))
-			print("Died! Health on server: " + str($Networking.sync_character_health))
-			print($state_manager.current_state)

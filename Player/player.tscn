@@ -399,5 +399,3 @@ animation_name = "Attack"
 [node name="death_state" type="Node" parent="state_manager"]
 script = ExtResource( "19_7ivn0" )
 animation_name = "Death"
-
-[connection signal="area_entered" from="ProjectileDetector" to="." method="_on_projectile_detector_area_entered"]

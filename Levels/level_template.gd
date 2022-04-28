@@ -40,24 +40,27 @@ func create_player(id : int) -> void:
 	p.get_node("Networking").sync_position = Vector2(random_number, random_number)
 	print("position printing from level script: " + str(p.get_node("Networking").sync_position))
 	
-	#p.connect("hurt_player", hurt_player, [id])
+	p.connect("hurt_player", hurt_player, [id])
 	
 	$Players.add_child(p)
 
 func destroy_player(id : int) -> void:
 	$Players.get_node(str(id)).queue_free()
 
-#func hurt_player(id):
-#	print("player " + str(id) + " has been hurt")
-#	var this_player = $Players.get_node(str(id))
-#
-#	this_player.health -= 1
-#	if this_player.health <= 0:
-#		this_player.get_node("state_manager").change_state(4)
-#		print("Health: " + str(this_player.health))
-#		print("Health on server: " + str(this_player.get_node("Networking").sync_character_health))
-#		print(this_player.get_node("state_manager").current_state)
-	
+func hurt_player(id):
+	if multiplayer.is_server():
+		print("player " + str(id) + " has been hurt")
+		var this_player = $Players.get_node(str(id))
+
+		this_player.health -= 1
+		print("Health: " + str(this_player.health))
+		print("Health on server: " + str(this_player.get_node("Networking").sync_character_health))
+		if this_player.health <= 0:
+			this_player.get_node("state_manager").change_state(4)
+			print("Died! Health: " + str(this_player.health))
+			print("Died! Health on server: " + str(this_player.get_node("Networking").sync_character_health))
+			print(this_player.get_node("state_manager").current_state)
+
 
 @rpc(any_peer)
 func player_projectile():
