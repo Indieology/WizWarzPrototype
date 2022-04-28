@@ -115,8 +115,3 @@ func _on_projectile_detector_area_entered(area):
 			print("Died! Health: " + str(health))
 			print("Died! Health on server: " + str($Networking.sync_character_health))
 			print($state_manager.current_state)
-
-#Gets called at the end of the Death animation in the AnimationPlayer node
-func kill_player() -> void:
-	if is_local_authority():
-		queue_free()

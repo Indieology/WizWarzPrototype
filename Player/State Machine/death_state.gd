@@ -8,3 +8,5 @@ func physics_process(delta: float) -> int:
 	
 	return State.Null
 	
+func death_animation_finished() -> void:
+	player.queue_free()
