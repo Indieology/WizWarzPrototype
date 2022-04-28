@@ -40,6 +40,9 @@ func create_player(id : int) -> void:
 	p.get_node("Networking").sync_position = Vector2(random_number, random_number)
 	print("position printing from level script: " + str(p.get_node("Networking").sync_position))
 	
+	#I see what you were saying about signals being like social media posts, but how would I connect this signal
+	#To a function in a differnet script? It just seems convient to connect signals here, but that means im
+	#limited to only functions in this script?
 	p.connect("hurt_player", hurt_player, [id])
 	
 	$Players.add_child(p)
@@ -48,19 +51,8 @@ func destroy_player(id : int) -> void:
 	$Players.get_node(str(id)).queue_free()
 
 func hurt_player(id):
-	if multiplayer.is_server():
-		print("player " + str(id) + " has been hurt")
-		var this_player = $Players.get_node(str(id))
-
-		this_player.health -= 1
-		print("Health: " + str(this_player.health))
-		print("Health on server: " + str(this_player.get_node("Networking").sync_character_health))
-		if this_player.health <= 0:
-			this_player.get_node("state_manager").change_state(4)
-			print("Died! Health: " + str(this_player.health))
-			print("Died! Health on server: " + str(this_player.get_node("Networking").sync_character_health))
-			print(this_player.get_node("state_manager").current_state)
-
+	#Is this where I would update health UI?
+	pass
 
 @rpc(any_peer)
 func player_projectile():

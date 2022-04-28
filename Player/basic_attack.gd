@@ -1,7 +1,5 @@
 extends RigidDynamicBody2D
 
-signal hurt_player
-
 func _ready():
 	if $AnimatedSprite2D.flip_h == true:
 		$PlayerDetector.position = Vector2 (5,5)
@@ -13,5 +11,7 @@ func _process(delta):
 
 func _on_player_detector_area_entered(area):
 		var detected_object = area.get_parent()
-		emit_signal("hurt_player", detected_object)
+		if detected_object.has_method("take_damage"):
+			detected_object.take_damage(1)
+			print("calling take_damage() from attack script")
 	

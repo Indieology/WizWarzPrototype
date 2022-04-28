@@ -9,4 +9,5 @@ func physics_process(delta: float) -> int:
 	return State.Null
 
 func exit() -> void:
-	player.queue_free()
+	pass
+	#player.queue_free()

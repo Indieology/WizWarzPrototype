@@ -6,6 +6,8 @@ const SPEED = 100.0
 @onready var states = $state_manager
 @onready var animation_player = $AnimationPlayer
 
+signal hurt_player
+
 var basic_attack : PackedScene = preload("res://Player/basic_attack.tscn")
 var health = 3 :
 	set(value):
@@ -102,3 +104,20 @@ func spawn_projectile_clients(position : Vector2, impulse : Vector2, sprite_flip
 func is_local_authority():
 	return $Networking/MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id()
 
+func take_damage(amount):
+	if multiplayer.is_server():
+		health -= amount
+		emit_signal("hurt_player")
+		print("server decreased health")
+		if health > 0:
+			#states.change_state(hurt)   state not created yet
+			#print($state_manager.current_state)
+			print("Health: " + str(health))
+			print("Health on server: " + str($Networking.sync_character_health))
+		#should I just transition to hurt state and have the hurt state determine if it should jump to death state? 
+		#Or does it make sense to determine which state to go to here?
+		else:
+			states.change_state(4)
+			print($state_manager.current_state)
+			print("Died! Health: " + str(health))
+			print("Died! Health on server: " + str($Networking.sync_character_health))
