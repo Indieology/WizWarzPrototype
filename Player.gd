@@ -9,8 +9,11 @@ const SPEED = 100.0
 var basic_attack : PackedScene = preload("res://Player/basic_attack.tscn")
 var health = 3 :
 	set(value):
-		health = value
-		$Networking.sync_character_health = value
+		if multiplayer.is_server():
+			health = value
+			$Networking.sync_character_health = value
+		else:
+			print("Player being damaged by client and not server!")
 
 signal hurt_player
 
