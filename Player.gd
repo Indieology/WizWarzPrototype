@@ -105,7 +105,9 @@ func is_local_authority():
 	return $Networking/MultiplayerSynchronizer.get_multiplayer_authority() == multiplayer.get_unique_id()
 
 func take_damage(amount):
-	if multiplayer.is_server():
+	if not multiplayer.is_server():
+		return
+	else:
 		health -= amount
 		emit_signal("hurt_player")
 		print("server decreased health")
