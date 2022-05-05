@@ -107,18 +107,14 @@ func is_local_authority():
 func take_damage(amount):
 	if not multiplayer.is_server():
 		return
+	health -= amount
+	emit_signal("hurt_player")
+	print("server decreased health")
+	if health > 0:
+		#states.change_state(hurt)   state not created yet
+		print("Hurt! Health: " + str(health))
+		print("Hurt! Health on server: " + str($Networking.sync_character_health))
 	else:
-		health -= amount
-		emit_signal("hurt_player")
-		print("server decreased health")
-		if health > 0:
-			#states.change_state(hurt)   state not created yet
-			#print($state_manager.current_state)
-			print("Hurt! Health: " + str(health))
-			print("Hurt! Health on server: " + str($Networking.sync_character_health))
-		#should I just transition to hurt state and have the hurt state determine if it should jump to death state? 
-		#Or does it make sense to determine which state to go to here?
-		else:
-			states.change_state(4)
-			print("Died! Health: " + str(health))
-			print("Died! Health on server: " + str($Networking.sync_character_health))
+		states.change_state(4)
+		print("Died! Health: " + str(health))
+		print("Died! Health on server: " + str($Networking.sync_character_health))
